@@ -5,7 +5,7 @@
  * unit tests. They cover more code than the unit tests
  * per test.
  */
-
+// this is the file to reference for integration tests
 import React from 'react'
 import axiosMock from 'axios'
 import {renderWithRouter, generate, Simulate} from 'til-client-test-utils'
@@ -47,7 +47,9 @@ test('login as an existing user', async () => {
   const {post} = axiosMock.__mock.instance
   const token = generate.token(fakeUser)
   post.mockImplementationOnce(() =>
+  // use Promise.reject to test for a failure case
     Promise.resolve({
+      // or use error: to test for a failure case
       data: {user: {...fakeUser, token}},
     }),
   )
@@ -55,6 +57,10 @@ test('login as an existing user', async () => {
 
   // wait for the mocked requests to finish
   await finishLoading()
+
+  // wait for finish Loading &
+  // assert that the error message is displayed
+  // to test for the failure case
 
   // assert calls
   expect(axiosMock.__mock.instance.post).toHaveBeenCalledTimes(1)
@@ -66,6 +72,7 @@ test('login as an existing user', async () => {
   // assert the state of the world
   expect(window.localStorage.getItem('token')).toBe(token)
   expect(window.location.href).not.toContain('login')
+  expect(window.location.href).toBe('https://til.test.com/')
   expect(getByTestId('username-display').textContent).toEqual(fakeUser.username)
   expect(getByText('Logout')).toBeTruthy()
 })

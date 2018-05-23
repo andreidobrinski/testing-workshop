@@ -9,6 +9,7 @@ function renderWithRouter(ui, {route = '/', ...renderOptions} = {}) {
   const history = createMemoryHistory({initialEntries: [route]})
   const utils = render(<Router history={history}>{ui}</Router>, renderOptions)
   const finishLoading = () =>
+  // queryBy returns null, getBy will throw an error
     wait(() => expect(utils.queryByText('Loading')).toBeNull())
   return {
     ...utils,
