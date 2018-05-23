@@ -7,9 +7,13 @@
  */
 
 import React from 'react'
-import {Simulate} from 'react-dom/test-utils'
+// import {Simulate} from 'react-dom/test-utils'
 import axiosMock from 'axios'
+// configured so that it could be loaded as a node module
+// done with this line in jest.config.js
+// modulePaths: ['<rootDir>/src', '<rootDir>/test'],
 import {renderWithRouter, generate} from 'til-client-test-utils'
+import {Simulate} from 'react-testing-library'
 import {init as initAPI} from '../utils/api'
 import App from '../app'
 
