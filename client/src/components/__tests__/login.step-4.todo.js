@@ -1,7 +1,7 @@
 // snapshot testing
 import React from 'react'
 import {generate} from 'til-client-test-utils'
-import {renderIntoDocument, cleanup} from 'react-testing-library'
+import {renderIntoDocument, render, cleanup} from 'react-testing-library'
 import Login from '../login'
 
 afterEach(cleanup)
@@ -28,6 +28,11 @@ test('calls onSubmit with the username and password when submitted', () => {
 })
 
 test('snapshot', () => {
+  const {container} = render(<Login />)
+  // first child is used because container is a div that wraps everything
+  // only the firstchild matters
+  // won't work if you're rendering a fragment
+  expect(container.firstChild).toMatchSnapshot()
   // render the login, this will give you back an object with a `container` property
   // expect the `container` property to match a snapshot
 })
@@ -46,3 +51,10 @@ test.skip('I submitted my elaboration and feedback', () => {
   expect(submitted).toBe(true)
 })
 ////////////////////////////////
+// in expect(container.firstChild).toMatchSnapshot()
+// first child is used because container is a div that wraps everything
+// only the firstchild matters
+// won't work if you're rendering a fragment
+// snapshots give an idea of what css is changing, and how that could affect other stuff
+// pressing u will update a snapshot in the command line
+// not a good candidate for TDD
